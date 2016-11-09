@@ -26,6 +26,7 @@ class Mainboard():
         while True:
             previous_byte = byte
             byte = self.rs232.read(1)
+            print hex(byte)
             if byte == 0xCC:
                 if previous_byte == 0xCC:
                     break
