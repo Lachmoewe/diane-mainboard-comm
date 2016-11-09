@@ -26,8 +26,8 @@ class Mainboard():
         while True:
             previous_byte = byte
             byte = self.rs232.read(1)
-            if byte = '\xCC':
-                if previous_byte = '\xCC':
+            if byte == 0xCC:
+                if previous_byte == '\xCC':
                     break
 
         packagenumber = self.rs232.read(2)
@@ -36,7 +36,7 @@ class Mainboard():
         print "#" + packagenumber + ": " + data
         stop = self.rs232.read(2)
 
-        if stop not '\x1F1F':
+        if stop not 0x1F1F:
             print "ERROR: Package number " + packagenumber + " is broken!\n"
         
 
