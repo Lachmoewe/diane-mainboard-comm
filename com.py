@@ -20,7 +20,7 @@ class Mainboard():
                         timeout = self.timeout
                         )
 
-    def read_package():
+    def read_package(self):
         byte=None
         previous_byte=None
         while True:
