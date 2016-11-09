@@ -42,7 +42,7 @@ class Mainboard():
         stop = self.rs232.read(2)
         #print stop
         print ''.join( [ "%02X " % ord( x ) for x in stop ] ).strip()
-        if (stop is not '\x1F\x1F'):
+        if (stop is not struct.pack("<H",0x1F1F):
             print "ERROR: Package number " + str(packagenumber) + " is broken!\n"
         
 
