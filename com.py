@@ -1,6 +1,7 @@
 import serial
 import io
 import time
+import struct
 
 class Mainboard():
     
@@ -26,19 +27,23 @@ class Mainboard():
         while True:
             previous_byte = byte
             byte = self.rs232.read(1)
-            print hex(byte)
-            if byte == 0xCC:
-                if previous_byte == 0xCC:
+#            print ''.join( [ "%02X " % ord( x ) for x in byte ] ).strip()
+            if byte == chr(0xCC):
+                print "FOUND FIRST START BYTE"
+                if previous_byte == chr(0xCC):
+                    print "FOUND SECOND START BYTE"
                     break
 
-        packagenumber = self.rs232.read(2)
-        packagelength = self.rs232.read(1)
+        packagenumber = struct.unpack("<H",self.rs232.read(2))[0]
+        packagelength = struct.unpack("<B",self.rs232.read(1))[0]
         data = self.rs232.read(int(packagelength))
-        print "#" + packagenumber + ": " + data
+        print "PACKAGELENGTH DETECTED: " + str(packagelength)
+        print "#" + str(packagenumber) + ": " + data
         stop = self.rs232.read(2)
-
-        if (stop is not 0x1F1F):
-            print "ERROR: Package number " + packagenumber + " is broken!\n"
+        #print stop
+        print ''.join( [ "%02X " % ord( x ) for x in stop ] ).strip()
+        if (stop is not '\x1F\x1F'):
+            print "ERROR: Package number " + str(packagenumber) + " is broken!\n"
         
 
 if __name__ == '__main__':
