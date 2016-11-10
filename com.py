@@ -63,6 +63,8 @@ class Mainboard():
         self.savedata = ''
 
     def read_package(self):
+        
+        # Find the startbytes
         byte=None
         previous_byte=None
         while True:
@@ -71,7 +73,8 @@ class Mainboard():
             if byte == chr(signal["START_byte"]):
                 if previous_byte == chr(signal["START_byte"]):
                     break
-
+        
+        # Receive the package
         packagenumber = struct.unpack(">H",self.rs232.read(2))[0]
         packagelength = struct.unpack("<B",self.rs232.read(1))[0]
         data = self.rs232.read(int(packagelength))
@@ -84,9 +87,11 @@ class Mainboard():
                 unpackcounter=unpackcounter+1
             except:
                 break
-        #print "#" + str(packagenumber)
+        
+        # Build up returnable list with data in it
         package=[]
         package.append(("PKG_num",packagenumber))
+        
         for i in range(packagelength/2):
             signalname = signal.keys()[signal.values().index(datathing[i*2])]
             if signalname not in ("PRS0_id","PRS1_id","TEMP_id"):
@@ -97,10 +102,13 @@ class Mainboard():
             else:
                 statename = datathing[i*2+1]
             package.append((signalname,statename))
-        print package
+        
+        # Check if stopbytes follow
         stop = self.rs232.read(2)
         if (stop != 2*chr(signal["STOP_byte"])):
             print "ERROR: Package number " + str(packagenumber) + " is broken!\n"
+        
+        return package
         
 
 import Tkinter as tk
