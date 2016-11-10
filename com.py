@@ -34,7 +34,7 @@ class Mainboard():
                     print "FOUND SECOND START BYTE"
                     break
 
-        packagenumber = struct.unpack("<H",self.rs232.read(2))[0]
+        packagenumber = struct.unpack(">H",self.rs232.read(2))[0]
         packagelength = struct.unpack("<B",self.rs232.read(1))[0]
         data = self.rs232.read(int(packagelength))
         print "PACKAGELENGTH DETECTED: " + str(packagelength)
