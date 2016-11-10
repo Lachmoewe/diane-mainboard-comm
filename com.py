@@ -89,11 +89,11 @@ class Mainboard():
             print "ERROR: Package number " + str(packagenumber) + " is broken!\n"
         
 
-from Tkinter import *
+import Tkinter as tk
 import threading
 
 class App(threading.Thread):
-    def __init__(self,master):
+    def __init__(self):
         threading.Thread.__init__(self)
         self.start()
 
@@ -101,37 +101,30 @@ class App(threading.Thread):
         self.root.quit()
 
     def run(self):
-        frame = Frame(master)
-        frame.pack()
-        self.GET_prs0_bttn = Button(frame, text="GET_prs0",command=None)
-        self.GET_prs0_bttn.pack(side=LEFT)
-        self.GET_prs1_bttn = Button(frame, text="GET_prs1",command=None)
-        self.GET_prs1_bttn.pack(side=LEFT)
-        self.GET_temp_bttn = Button(frame, text="GET_temp",command=None)
-        self.GET_temp_bttn.pack(side=LEFT)
-        self.GET_arm_bttn = Button(frame, text="GET_arm",command=None)
-        self.GET_arm_bttn.pack(side=LEFT)
-        self.OPN_vlv_bttn = Button(frame, text="OPN_vlv",command=None)
-        self.OPN_vlv_bttn.pack(side=LEFT)
-        self.CLS_vlv_bttn = Button(frame, text="CLS_vlv",command=None)
-        self.CLS_vlv_bttn.pack(side=LEFT)
-        self.REQ_pwr_dwn_bttn = Button(frame, fg="red", text="REQ_pwr_dwn",command=None)
-        self.REQ_pwr_dwn_bttn.pack(side=LEFT)
+        self.root = tk.Tk()
+        self.root.protocol("WM_DELETE_WINDOW", self.callback)
+
+        #self.root.pack()
+        self.GET_prs0_bttn = tk.Button(self.root, text="GET_prs0",command=None)
+        self.GET_prs0_bttn.pack(side=tk.LEFT)
+        self.GET_prs1_bttn = tk.Button(self.root, text="GET_prs1",command=None)
+        self.GET_prs1_bttn.pack(side=tk.LEFT)
+        self.GET_temp_bttn = tk.Button(self.root, text="GET_temp",command=None)
+        self.GET_temp_bttn.pack(side=tk.LEFT)
+        self.GET_arm_bttn = tk.Button(self.root, text="GET_arm",command=None)
+        self.GET_arm_bttn.pack(side=tk.LEFT)
+        self.OPN_vlv_bttn = tk.Button(self.root, text="OPN_vlv",command=None)
+        self.OPN_vlv_bttn.pack(side=tk.LEFT)
+        self.CLS_vlv_bttn = tk.Button(self.root, text="CLS_vlv",command=None)
+        self.CLS_vlv_bttn.pack(side=tk.LEFT)
+        self.REQ_pwr_dwn_bttn = tk.Button(self.root, fg="red", text="REQ_pwr_dwn",command=None)
+        self.REQ_pwr_dwn_bttn.pack(side=tk.LEFT)
         
         self.root.mainloop()
 
 
 
-#root = Tk()
-#app = App(root)
 app=App()
 mb = Mainboard()
 while True:
     mb.read_package()
-#root.mainloop()
-#root.destroy
-
-#if __name__ == '__main__':
-#    mb = Mainboard()
-#    while True:
-#        mb.read_package()
