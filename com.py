@@ -55,6 +55,8 @@ class Mainboard():
                         timeout = self.timeout
                         )
 
+        self.savedata = ''
+
     def read_package(self):
         byte=None
         previous_byte=None
@@ -68,8 +70,7 @@ class Mainboard():
         packagenumber = struct.unpack(">H",self.rs232.read(2))[0]
         packagelength = struct.unpack("<B",self.rs232.read(1))[0]
         data = self.rs232.read(int(packagelength))
-        readabledata = ''.join( [ "%02X " % ord( x ) for x in data ] )#.strip()
-        
+        self.savedata += data
         unpackcounter = 0
         datathing = []
         while True:
@@ -79,9 +80,10 @@ class Mainboard():
             except:
                 break
         print "#" + str(packagenumber)
+        package=[]
         for i in range(packagelength/2):
-            print signal.keys()[signal.values().index(datathing[i*2])],datathing[i*2+1]
-        
+            package.append(signal.keys()[signal.values().index(datathing[i*2])],datathing[i*2+1])
+        print package
         stop = self.rs232.read(2)
         if (stop != 2*chr(signal["STOP_byte"])):
             print "ERROR: Package number " + str(packagenumber) + " is broken!\n"
