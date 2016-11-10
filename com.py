@@ -3,6 +3,7 @@ import io
 import time
 import struct
 
+
 class Mainboard():
     signal = dict(
        START_byte    = '\xCC',  #start byte for USART transmission
@@ -88,7 +89,41 @@ class Mainboard():
             print "ERROR: Package number " + str(packagenumber) + " is broken!\n"
         
 
-if __name__ == '__main__':
-    mb = Mainboard()
-    while True:
-        mb.read_package()
+from Tkinter import *
+
+class App:
+    def __init__(self,master):
+        frame = Frame(master)
+        frame.pack()
+
+        self.GET_prs0_bttn = Button(frame, text="GET_prs0",command=None)
+        self.GET_prs0_bttn.pack(side=LEFT)
+        self.GET_prs1_bttn = Button(frame, text="GET_prs1",command=None)
+        self.GET_prs1_bttn.pack(side=LEFT)
+        self.GET_temp_bttn = Button(frame, text="GET_temp",command=None)
+        self.GET_temp_bttn.pack(side=LEFT)
+        self.GET_arm_bttn = Button(frame, text="GET_arm",command=None)
+        self.GET_arm_bttn.pack(side=LEFT)
+        self.OPN_vlv_bttn = Button(frame, text="OPN_vlv",command=None)
+        self.OPN_vlv_bttn.pack(side=LEFT)
+        self.CLS_vlv_bttn = Button(frame, text="CLS_vlv",command=None)
+        self.CLS_vlv_bttn.pack(side=LEFT)
+        self.REQ_pwr_dwn_bttn = Button(frame, fg="red", text="REQ_pwr_dwn",command=None)
+        self.REQ_pwr_dwn_bttn.pack(side=LEFT)
+
+root = Tk()
+app = App(root)
+mb = Mainboard()
+def task():
+    mb.read_package()
+    root.after(0,task)
+
+root.after(0,task)
+
+root.mainloop()
+root.destroy
+
+#if __name__ == '__main__':
+#    mb = Mainboard()
+#    while True:
+#        mb.read_package()
