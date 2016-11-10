@@ -36,6 +36,11 @@ class Mainboard():
        VLV_opnd      =  0xA8 ,  #ID for Valve_0 opened
        VLV_clsd      =  0xA9 ,  #ID for Valve_0 closed
        ERR_stat      =  0xA0 ,  #ID for error status
+       
+       ARM_success   =  0xE6 ,  #ID for successful CubeSat ejection
+       SODS_ok       =  0xE8 ,  #ID for successful SODS reception
+       LO_ok         =  0xE9 ,  #ID for successful LO reception
+       SOE_ok        =  0xEA ,  #ID for successful SOE reception
     )
 
 
@@ -85,7 +90,10 @@ class Mainboard():
         for i in range(packagelength/2):
             signalname = signal.keys()[signal.values().index(datathing[i*2])]
             if signalname not in ("PRS0_id","PRS1_id","TEMP_id"):
-                statename = signal.keys()[signal.values().index(datathing[i*2+1])]
+                try:
+                    statename = signal.keys()[signal.values().index(datathing[i*2+1])]
+                except:
+                    statename = datathing[i*2+1]
             else:
                 statename = datathing[i*2+1]
             package.append((signalname,statename))
