@@ -124,6 +124,10 @@ class App(threading.Thread):
         run = False
         self.root.quit()
 
+
+    def update_package(self,package):
+        print package
+
     def run(self):
         self.root = tk.Tk()
         self.root.protocol("WM_DELETE_WINDOW", self.callback)
@@ -145,12 +149,12 @@ class App(threading.Thread):
         self.REQ_pwr_dwn_bttn.pack(side=tk.LEFT)
         
         self.root.mainloop()
+        self.root.destroy()
 
 
 
 app=App()
 mb = Mainboard()
 while run:
-    mb.read_package()
+    app.update_package(mb.read_package())
 
-exit(0)
