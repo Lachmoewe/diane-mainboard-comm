@@ -88,12 +88,19 @@ class Mainboard():
         
 
 from Tkinter import *
+import threading
 
-class App:
+class App(threading.Thread):
     def __init__(self,master):
+        threading.Thread.__init__(self)
+        self.start()
+
+    def callback(self):
+        self.root.quit()
+
+    def run(self):
         frame = Frame(master)
         frame.pack()
-
         self.GET_prs0_bttn = Button(frame, text="GET_prs0",command=None)
         self.GET_prs0_bttn.pack(side=LEFT)
         self.GET_prs1_bttn = Button(frame, text="GET_prs1",command=None)
@@ -108,18 +115,19 @@ class App:
         self.CLS_vlv_bttn.pack(side=LEFT)
         self.REQ_pwr_dwn_bttn = Button(frame, fg="red", text="REQ_pwr_dwn",command=None)
         self.REQ_pwr_dwn_bttn.pack(side=LEFT)
+        
+        self.root.mainloop()
 
-root = Tk()
-app = App(root)
+
+
+#root = Tk()
+#app = App(root)
+app=App()
 mb = Mainboard()
-def task():
+while True:
     mb.read_package()
-    root.after(0,task)
-
-root.after(0,task)
-
-root.mainloop()
-root.destroy
+#root.mainloop()
+#root.destroy
 
 #if __name__ == '__main__':
 #    mb = Mainboard()
