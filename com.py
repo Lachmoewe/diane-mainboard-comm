@@ -130,22 +130,27 @@ class App(threading.Thread):
         self.root = tk.Tk()
         self.root.protocol("WM_DELETE_WINDOW", self.callback)
 
-        #self.root.pack()
+        #control buttons for mainboard
         self.GET_prs0_bttn = tk.Button(self.root, text="GET_prs0",command=None)
-        self.GET_prs0_bttn.pack(side=tk.LEFT)
         self.GET_prs1_bttn = tk.Button(self.root, text="GET_prs1",command=None)
-        self.GET_prs1_bttn.pack(side=tk.LEFT)
         self.GET_temp_bttn = tk.Button(self.root, text="GET_temp",command=None)
-        self.GET_temp_bttn.pack(side=tk.LEFT)
         self.GET_arm_bttn = tk.Button(self.root, text="GET_arm",command=None)
-        self.GET_arm_bttn.pack(side=tk.LEFT)
         self.OPN_vlv_bttn = tk.Button(self.root, text="OPN_vlv",command=None)
-        self.OPN_vlv_bttn.pack(side=tk.LEFT)
         self.CLS_vlv_bttn = tk.Button(self.root, text="CLS_vlv",command=None)
-        self.CLS_vlv_bttn.pack(side=tk.LEFT)
         self.REQ_pwr_dwn_bttn = tk.Button(self.root, fg="red", text="REQ_pwr_dwn",command=None)
-        self.REQ_pwr_dwn_bttn.pack(side=tk.LEFT)
         
+        #text from mainboard
+        self.package_label = tk.Label(self.root, text="Nothing yet.")
+        
+        #layout
+        self.GET_prs0_bttn.grid(row=0)
+        self.GET_prs1_bttn.grid(row=1)
+        self.GET_temp_bttn.grid(row=2)
+        self.GET_arm_bttn.grid(row=0,column=1)
+        self.OPN_vlv_bttn.grid(row=1,column=1)
+        self.CLS_vlv_bttn.grid(row=2,column=1)
+        self.REQ_pwr_dwn_bttn.grid(columnspan=2,row=3)
+        self.package_label.grid(columnspan=3,row=4)
         
 
         self.root.mainloop()
@@ -153,15 +158,16 @@ class App(threading.Thread):
 
     def update_package(self,package):
         print package
-        self.package_label = tk.Label(self.root, text=str(package))
-        self.package_label.pack()
+        self.package_label.configure(text=str(package))
+        #self.package_label.pack()
 
 
 app=App()
-mb = Mainboard()
+#mb = Mainboard()
 timecount = 1
 while run:
     time.sleep(0.25)
     app.update_package((("PKG_num",timecount), ('PRS0_id', 88), ('PRS1_id', 46), ('TEMP_id', 24)))
+    timecount += 1
     #app.update_package(mb.read_package())
 
