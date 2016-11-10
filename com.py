@@ -79,10 +79,16 @@ class Mainboard():
                 unpackcounter=unpackcounter+1
             except:
                 break
-        print "#" + str(packagenumber)
+        #print "#" + str(packagenumber)
         package=[]
+        package.append(("PKG_num",packagenumber))
         for i in range(packagelength/2):
-            package.append(signal.keys()[signal.values().index(datathing[i*2])],datathing[i*2+1])
+            signalname = signal.keys()[signal.values().index(datathing[i*2])]
+            if signalname not in ("PRS0_id","PRS1_id","TEMP_id"):
+                statename = signal.keys()[signal.values().index(datathing[i*2+1])]
+            else:
+                statename = datathing[i*2+1]
+            package.append((signalname,statename))
         print package
         stop = self.rs232.read(2)
         if (stop != 2*chr(signal["STOP_byte"])):
@@ -91,13 +97,15 @@ class Mainboard():
 
 import Tkinter as tk
 import threading
-
+global run
+run = True
 class App(threading.Thread):
     def __init__(self):
         threading.Thread.__init__(self)
         self.start()
 
     def callback(self):
+        run = False
         self.root.quit()
 
     def run(self):
@@ -126,5 +134,7 @@ class App(threading.Thread):
 
 app=App()
 mb = Mainboard()
-while True:
+while run:
     mb.read_package()
+
+exit(0)
