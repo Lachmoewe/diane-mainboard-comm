@@ -29,20 +29,22 @@ class Mainboard():
             byte = self.rs232.read(1)
 #            print ''.join( [ "%02X " % ord( x ) for x in byte ] ).strip()
             if byte == chr(0xCC):
-                print "FOUND FIRST START BYTE"
+                #print "FOUND FIRST START BYTE"
                 if previous_byte == chr(0xCC):
-                    print "FOUND SECOND START BYTE"
+                    #print "FOUND SECOND START BYTE"
                     break
 
         packagenumber = struct.unpack(">H",self.rs232.read(2))[0]
         packagelength = struct.unpack("<B",self.rs232.read(1))[0]
         data = self.rs232.read(int(packagelength))
-        print "PACKAGELENGTH DETECTED: " + str(packagelength)
-        print "#" + str(packagenumber) + ": " + data
+        #print "PACKAGELENGTH DETECTED: " + str(packagelength)
+        #print "#" + str(packagenumber) + ": " + data
+        readabledata = ''.join( [ "%02X " % ord( x ) for x in data ] )#.strip()
+        print "#"+str(packagenumber) + ": " + readabledata 
         stop = self.rs232.read(2)
         #print stop
-        print ''.join( [ "%02X " % ord( x ) for x in stop ] ).strip()
-        if (stop is not struct.pack("<H",0x1F1F):
+        #print ''.join( [ "%02X " % ord( x ) for x in stop ] ).strip()
+        if (stop != struct.pack("<H",0x1F1F)):
             print "ERROR: Package number " + str(packagenumber) + " is broken!\n"
         
 
