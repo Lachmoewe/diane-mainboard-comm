@@ -125,8 +125,6 @@ class App(threading.Thread):
         self.root.quit()
 
 
-    def update_package(self,package):
-        print package
 
     def run(self):
         self.root = tk.Tk()
@@ -148,13 +146,22 @@ class App(threading.Thread):
         self.REQ_pwr_dwn_bttn = tk.Button(self.root, fg="red", text="REQ_pwr_dwn",command=None)
         self.REQ_pwr_dwn_bttn.pack(side=tk.LEFT)
         
+        
+
         self.root.mainloop()
         self.root.destroy()
 
+    def update_package(self,package):
+        print package
+        self.package_label = tk.Label(self.root, text=str(package))
+        self.package_label.pack()
 
 
 app=App()
 mb = Mainboard()
+timecount = 1
 while run:
-    app.update_package(mb.read_package())
+    time.sleep(0.25)
+    app.update_package((("PKG_num",timecount), ('PRS0_id', 88), ('PRS1_id', 46), ('TEMP_id', 24)))
+    #app.update_package(mb.read_package())
 
