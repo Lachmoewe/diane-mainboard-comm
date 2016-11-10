@@ -78,6 +78,7 @@ class Mainboard():
                 unpackcounter=unpackcounter+1
             except:
                 break
+        print datathing
         
         print "#"+str(packagenumber) + ": " + readabledata 
         stop = self.rs232.read(2)
