@@ -108,7 +108,7 @@ class Mainboard():
             else:
                 if signalname == "PRS0_id":
                     statename = self.PRS0_to_bar(datathing[i*2+1])
-                elif statename == "PRS1_id":
+                elif signalname == "PRS1_id":
                     statename = self.PRS0_to_bar(datathing[i*2+1])
                 else:
                     statename = datathing[i*2+1]
@@ -132,15 +132,15 @@ class App(threading.Thread):
         self.mb=mainboard
 
         self.status = dict()
-        self.status["PRS0"] = None
-        self.status["PRS1"] = None
-        self.status["TEMP"] = None
-        self.status["CAM0"] = None
-        self.status["CAM1"] = None
-        self.status["ARM"]  = None
-        self.status["RF"]   = None
-        self.status["VLV"]  = None
-        self.status["RXSM"] = None
+        self.status["PRS0_id"] = None
+        self.status["PRS1_id"] = None
+        self.status["TEMP_id"] = None
+        self.status["CAM0_id"] = None
+        self.status["CAM1_id"] = None
+        self.status["ARM_id"]  = None
+        self.status["RF_id"]   = None
+        self.status["VLV_id"]  = None
+        self.status["RXSM_id"] = None
 
         self.start()
 
@@ -183,18 +183,27 @@ class App(threading.Thread):
     def update_display(self):
         pass
 
-    def update_package(self,package):
-        print package
-        self.package_label.configure(text=str(package))
+    def update_package(self):
+        package = self.mb.read_package()
+        #print package
+        for signal in package:
+
+            self.status[signal[0]] = signal[1]
+
+        #print self.status
+        message = ""
+        for i in self.status:
+            message += i+": "+str(self.status[i])+"\n"
+        self.package_label.configure(text=message)
         #self.package_label.pack()
 
 
-app=App()
-#mb = Mainboard()
+mb = Mainboard()
+app=App(mb)
 timecount = 1
 while run:
-    time.sleep(0.25)
-    app.update_package((("PKG_num",timecount), ('PRS0_id', 88), ('PRS1_id', 46), ('TEMP_id', 24)))
-    timecount += 1
-    #app.update_package(mb.read_package())
+    #time.sleep(0.25)
+    #app.update_package((("PKG_num",timecount), ('PRS0_id', 88), ('PRS1_id', 46), ('TEMP_id', 24)))
+    #timecount += 1
+    app.update_package()
 
