@@ -62,6 +62,12 @@ class Mainboard():
 
         self.savedata = ''
 
+    def PRS0_to_bar(self,x):
+        return x * 6.895 * 1.25/512
+
+    def PRS1_to_bar(self,x):
+        return x * 17,237 * 1,25/256
+
     def read_package(self):
         
         # Find the startbytes
@@ -100,7 +106,12 @@ class Mainboard():
                 except:
                     statename = datathing[i*2+1]
             else:
-                statename = datathing[i*2+1]
+                if signalname == "PRS0_id":
+                    statename = self.PRS0_to_bar(datathing[i*2+1])
+                elif statename == "PRS1_id":
+                    statename = self.PRS0_to_bar(datathing[i*2+1])
+                else:
+                    statename = datathing[i*2+1]
             package.append((signalname,statename))
         
         # Check if stopbytes follow
@@ -116,8 +127,21 @@ import threading
 global run
 run = True
 class App(threading.Thread):
-    def __init__(self):
+    def __init__(self,mainboard=None):
         threading.Thread.__init__(self)
+        self.mb=mainboard
+
+        self.status = dict()
+        self.status["PRS0"] = None
+        self.status["PRS1"] = None
+        self.status["TEMP"] = None
+        self.status["CAM0"] = None
+        self.status["CAM1"] = None
+        self.status["ARM"]  = None
+        self.status["RF"]   = None
+        self.status["VLV"]  = None
+        self.status["RXSM"] = None
+
         self.start()
 
     def callback(self):
@@ -155,6 +179,9 @@ class App(threading.Thread):
 
         self.root.mainloop()
         self.root.destroy()
+
+    def update_display(self):
+        pass
 
     def update_package(self,package):
         print package
