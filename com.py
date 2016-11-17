@@ -44,14 +44,13 @@ class Mainboard():
     )
 
 
-    def __init__(self, port="/dev/ttyUSB0", logfile="log.dat"):
+    def __init__(self, port="/dev/ttyUSB0"):
         self.baud     = 38400
         self.databits = 8
         self.parity   = "N"
         self.stopbits = 1
         self.timeout  = None
-
-        self.logfile = open(logfile,'a+')
+        self.logfile = open(str(int(time.time()))+".log",'ab')
 
         self.rs232 = serial.Serial(
                         port, 
@@ -158,6 +157,7 @@ class Mainboard():
 
 import Tkinter as tk
 import threading
+import collections
 global run
 run = True
 class App(threading.Thread):
@@ -165,7 +165,7 @@ class App(threading.Thread):
         threading.Thread.__init__(self)
         self.mb=mainboard
 
-        self.status = dict()
+        self.status = collections.OrderedDict()
         self.status["PRS0_id"] = None
         self.status["PRS1_id"] = None
         self.status["TEMP_id"] = None
@@ -187,6 +187,9 @@ class App(threading.Thread):
     def run(self):
         self.root = tk.Tk()
         self.root.protocol("WM_DELETE_WINDOW", self.callback)
+        self.root.minsize(width=300,height=600)
+        self.root.maxsize(width=300,height=600)
+        self.root.resizable(width=False,height=False)
 
         #control buttons for mainboard
         self.GET_prs0_bttn = tk.Button(self.root, text="GET_prs0",command=self.mb.GET_prs0)
@@ -198,7 +201,10 @@ class App(threading.Thread):
         self.REQ_pwr_dwn_bttn = tk.Button(self.root, fg="red", text="REQ_pwr_dwn",command=self.mb.REQ_pwr_dwn)
         
         #text from mainboard
-        self.package_label = tk.Label(self.root, text="Nothing yet.")
+        message = ""
+        for i in self.status:
+            message += i+": "+str(self.status[i])+"\n"
+        self.package_label = tk.Label(self.root, text=message)
         
         #layout
         self.GET_prs0_bttn.grid(row=0)
