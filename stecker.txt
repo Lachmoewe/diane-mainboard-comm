@@ -1,0 +1,8 @@
+alles vlnr, mainboard schrift u. bauteile oben
+
+kameras: 5V | ctrl | stat | GND
+
+arm: +5V CubeSat | GND (5V) | ARM_Sensor (CubeSat-seitig auf GND) | PRS_low | PRS_high | Valve_0- | Valve_0/1+ | Valve_1-
+wobei das Ventil an Valve_0 anzuschließen und Valve_1 n.c. zu lassen ist
+
+rf:  +5V CubeSat | GND (5V) | Emitter (sig1) | Collector (sig1) | Emitter (sig0) | Collector (sig0) | +12V RF-Board | GND (12V)
