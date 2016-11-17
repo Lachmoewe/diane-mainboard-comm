@@ -44,12 +44,14 @@ class Mainboard():
     )
 
 
-    def __init__(self, port="/dev/ttyUSB0"):
+    def __init__(self, port="/dev/ttyUSB0", logfile="log.dat"):
         self.baud     = 38400
         self.databits = 8
         self.parity   = "N"
         self.stopbits = 1
         self.timeout  = None
+
+        self.logfile = open(logfile,'a+')
 
         self.rs232 = serial.Serial(
                         port, 
@@ -94,8 +96,10 @@ class Mainboard():
     def REQ_pwr_dwn(self):
         self.write_command(signal["REQ_pwr_dwn"])
 
-
-
+    def readdata(self,n):
+        dat = self.rs232.read(n)
+        self.logfile.write(dat)
+        return dat
 
 
     def read_package(self):
@@ -105,7 +109,7 @@ class Mainboard():
         previous_byte=None
         while True:
             previous_byte = byte
-            byte = self.rs232.read(1)
+            byte = self.readdata(1)
             if byte == chr(signal["START_byte"]):
                 if previous_byte == chr(signal["START_byte"]):
                     break
@@ -113,7 +117,7 @@ class Mainboard():
         # Receive the package
         packagenumber = struct.unpack(">H",self.rs232.read(2))[0]
         packagelength = struct.unpack("<B",self.rs232.read(1))[0]
-        data = self.rs232.read(int(packagelength))
+        data = self.readdata(int(packagelength))
         self.savedata += data
         unpackcounter = 0
         datathing = []
@@ -145,7 +149,7 @@ class Mainboard():
             package.append((signalname,statename))
         
         # Check if stopbytes follow
-        stop = self.rs232.read(2)
+        stop = self.readdata(2)
         if (stop != 2*chr(signal["STOP_byte"])):
             print "ERROR: Package number " + str(packagenumber) + " is broken!\n"
         
