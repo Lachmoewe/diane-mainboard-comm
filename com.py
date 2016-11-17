@@ -68,6 +68,36 @@ class Mainboard():
     def PRS1_to_bar(self,x):
         return x * 17,237 * 1,25/256
 
+    ### control functions following
+    def write_command(self,command):
+        w = chr(signal["START_byte"]) + command + chr(signal["START_byte"])
+        self.rs232.write(w)
+    
+    def GET_prs0(self):
+        self.write_command(signal["GET_prs0"])
+
+    def GET_prs1(self):
+        self.write_command(signal["GET_prs1"])
+    
+    def GET_temp(self):   
+        self.write_command(signal["GET_temp"])
+
+    def GET_arm(self):    
+        self.write_command(signal["GET_arm"])
+    
+    def OPN_vlv(self):   
+        self.write_command(signal["OPN_vlv"])
+    
+    def CLS_vlv(self):    
+        self.write_command(signal["CLS_vlv"])
+    
+    def REQ_pwr_dwn(self):
+        self.write_command(signal["REQ_pwr_down"])
+
+
+
+
+
     def read_package(self):
         
         # Find the startbytes
@@ -155,13 +185,13 @@ class App(threading.Thread):
         self.root.protocol("WM_DELETE_WINDOW", self.callback)
 
         #control buttons for mainboard
-        self.GET_prs0_bttn = tk.Button(self.root, text="GET_prs0",command=None)
-        self.GET_prs1_bttn = tk.Button(self.root, text="GET_prs1",command=None)
-        self.GET_temp_bttn = tk.Button(self.root, text="GET_temp",command=None)
-        self.GET_arm_bttn = tk.Button(self.root, text="GET_arm",command=None)
-        self.OPN_vlv_bttn = tk.Button(self.root, text="OPN_vlv",command=None)
-        self.CLS_vlv_bttn = tk.Button(self.root, text="CLS_vlv",command=None)
-        self.REQ_pwr_dwn_bttn = tk.Button(self.root, fg="red", text="REQ_pwr_dwn",command=None)
+        self.GET_prs0_bttn = tk.Button(self.root, text="GET_prs0",command=self.mb.GET_prs0())
+        self.GET_prs1_bttn = tk.Button(self.root, text="GET_prs1",command=self.mb.GET_prs1())
+        self.GET_temp_bttn = tk.Button(self.root, text="GET_temp",command=self.mb.GET_temp())
+        self.GET_arm_bttn = tk.Button(self.root, text="GET_arm",command=self.mb.GET_arm())
+        self.OPN_vlv_bttn = tk.Button(self.root, text="OPN_vlv",command=self.mb.OPN_vlv())
+        self.CLS_vlv_bttn = tk.Button(self.root, text="CLS_vlv",command=self.mb.CLS_vlv())
+        self.REQ_pwr_dwn_bttn = tk.Button(self.root, fg="red", text="REQ_pwr_dwn",command=self.mb.REQ_pwr_dwn())
         
         #text from mainboard
         self.package_label = tk.Label(self.root, text="Nothing yet.")
