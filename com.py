@@ -66,6 +66,7 @@ class Mainboard():
         self.parity   = "N"
         self.stopbits = 1
         self.timeout  = None
+        self.datalogfile = open(str(int(time.time()))+".datalog",'ab')
         self.logfile = open(str(int(time.time()))+".log",'ab')
 
         self.rs232 = serial.Serial(
@@ -113,7 +114,7 @@ class Mainboard():
 
     def readdata(self,n):
         dat = self.rs232.read(n)
-        self.logfile.write(dat)
+        self.datalogfile.write(dat)
         return dat
 
 
@@ -170,6 +171,7 @@ class Mainboard():
         if (stop != 2*chr(signal["STOP_byte"])):
             print "ERROR: Package number " + str(packagenumber) + " is broken!\n"
         
+        self.logfile.write(str(time.time()) + " " + package + "\n")
         return package
         
 
