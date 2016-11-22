@@ -29,13 +29,13 @@ class Mainboard():
         CLS_vlv       =  0x68 ,  #ID for command to close Valve_0
         REQ_pwr_dwn   =  0x6F ,  #ID for power down request
 
-        CAM0_ok       =  0xA4 ,  #ID for cam0 status ok
-        CAM1_ok       =  0xA5 ,  #ID for cam1 status ok
-        ARM_ok        =  0xA6 ,  #ID for ARM sensor ok
-        RF_ok         =  0xA7 ,  #ID for RF board ok
-        VLV_opnd      =  0xA8 ,  #ID for Valve_0 opened
-        VLV_clsd      =  0xA9 ,  #ID for Valve_0 closed
-        ERR_stat      =  0xA0 ,  #ID for error status
+ #      CAM0_ok       =  0xA4 ,  #ID for cam0 status ok
+ #      CAM1_ok       =  0xA5 ,  #ID for cam1 status ok
+ #      ARM_ok        =  0xA6 ,  #ID for ARM sensor ok
+ #      RF_ok         =  0xA7 ,  #ID for RF board ok
+ #      VLV_opnd      =  0xA8 ,  #ID for Valve_0 opened
+ #      VLV_clsd      =  0xA9 ,  #ID for Valve_0 closed
+ #      ERR_stat      =  0xA0 ,  #ID for error status
 
         PRSS_strt     =  0xA1 ,  #ID for Pressure-Sampling started
         PRSS_stop     =  0xA2 ,  #ID for Pressure-Sampling stopped
