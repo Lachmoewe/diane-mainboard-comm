@@ -8,39 +8,55 @@ class Mainboard():
     
     global signal 
     signal = dict(
-       START_byte    =  0xCC ,  #start byte for USART transmission
-       STOP_byte     =  0x1F ,  #stop byte for USART transmission
+        START_byte    =  0xCC ,  #start byte for USART transmission
+        STOP_byte     =  0x1F ,  #stop byte for USART transmission
 
-       PRS0_id       =  0x31 ,  #ID for data of PRS_sensor_0
-       PRS1_id       =  0x32 ,  #ID for data of PRS_sensor_1
-       TEMP_id       =  0x33 ,  #ID for data of TEMP_sensor
-       CAM0_id       =  0x34 ,  #ID for status of CAM_0
-       CAM1_id       =  0x35 ,  #ID for status of CAM_1
-       ARM_id        =  0x36 ,  #ID for status of ARM_sensor
-       RF_id         =  0x37 ,  #ID for status of RF-Board
-       VLV_id        =  0x38 ,  #ID for status of Valve_0
-       RXSM_id       =  0x30 ,  #ID for RXSM signal reception answer
+        PRS0_id       =  0x31 ,  #ID for data of PRS_sensor_0
+        PRS1_id       =  0x32 ,  #ID for data of PRS_sensor_1
+        TEMP_id       =  0x33 ,  #ID for data of TEMP_sensor
+        CAM0_id       =  0x34 ,  #ID for status of CAM_0
+        CAM1_id       =  0x35 ,  #ID for status of CAM_1
+        ARM_id        =  0x36 ,  #ID for status of ARM_sensor
+        RF_id         =  0x37 ,  #ID for status of RF-Board
+        VLV_id        =  0x38 ,  #ID for status of Valve_0
+        RXSM_id       =  0x30 ,  #ID for RXSM signal reception answer
 
-       GET_prs0      =  0x61 ,  #ID for request of single PRS0 value
-       GET_prs1      =  0x62 ,  #ID for request of single PRS1 value
-       GET_temp      =  0x63 ,  #ID for request of single TEMP value
-       GET_arm       =  0x66 ,  #ID for request of arm state
-       OPN_vlv       =  0x67 ,  #ID for command to open Valve_0
-       CLS_vlv       =  0x68 ,  #ID for command to close Valve_0
-       REQ_pwr_dwn   =  0x6F ,  #ID for power down request
+        GET_prs0      =  0x61 ,  #ID for request of single PRS0 value
+        GET_prs1      =  0x62 ,  #ID for request of single PRS1 value
+        GET_temp      =  0x63 ,  #ID for request of single TEMP value
+        GET_arm       =  0x66 ,  #ID for request of arm state
+        OPN_vlv       =  0x67 ,  #ID for command to open Valve_0
+        CLS_vlv       =  0x68 ,  #ID for command to close Valve_0
+        REQ_pwr_dwn   =  0x6F ,  #ID for power down request
 
-       CAM0_ok       =  0xA4 ,  #ID for cam0 status ok
-       CAM1_ok       =  0xA5 ,  #ID for cam1 status ok
-       ARM_ok        =  0xA6 ,  #ID for ARM sensor ok
-       RF_ok         =  0xA7 ,  #ID for RF board ok
-       VLV_opnd      =  0xA8 ,  #ID for Valve_0 opened
-       VLV_clsd      =  0xA9 ,  #ID for Valve_0 closed
-       ERR_stat      =  0xA0 ,  #ID for error status
-       
-       ARM_success   =  0xE6 ,  #ID for successful CubeSat ejection
-       SODS_ok       =  0xE8 ,  #ID for successful SODS reception
-       LO_ok         =  0xE9 ,  #ID for successful LO reception
-       SOE_ok        =  0xEA ,  #ID for successful SOE reception
+        CAM0_ok       =  0xA4 ,  #ID for cam0 status ok
+        CAM1_ok       =  0xA5 ,  #ID for cam1 status ok
+        ARM_ok        =  0xA6 ,  #ID for ARM sensor ok
+        RF_ok         =  0xA7 ,  #ID for RF board ok
+        VLV_opnd      =  0xA8 ,  #ID for Valve_0 opened
+        VLV_clsd      =  0xA9 ,  #ID for Valve_0 closed
+        ERR_stat      =  0xA0 ,  #ID for error status
+
+        PRSS_strt     =  0xA1 ,  #ID for Pressure-Sampling started
+        PRSS_stop     =  0xA2 ,  #ID for Pressure-Sampling stopped
+        CAM0_ok       =  0xA4 ,  #ID for cam0 status ok
+        CAM1_ok       =  0xA5 ,  #ID for cam1 status ok
+        ARM_ok        =  0xA6 ,  #ID for ARM sensor ok
+        RF_ok         =  0xA7 ,  #ID for RF board ok
+        VLV_opnd      =  0xA8 ,  #ID for Valve_0 opened
+        VLV_clsd      =  0xA9 ,  #ID for Valve_0 closed
+        RF_strt       =  0xAA ,  #ID for RF-Transmission started
+        RF_stop       =  0xAB ,  #ID for RF-Transmission stopped
+        VR_strt       =  0xAC ,  #ID for Video-Recording started
+        VR_stop       =  0xAD ,  #ID for Video-Recording stopped
+        CAM_on        =  0xAE ,  #ID for Cams turned on
+        CAM_off       =  0xAF ,  #ID for Cams turned off
+        ERR_stat      =  0xA0 ,  #ID for error status             
+
+        ARM_success   =  0xE6 ,  #ID for successful CubeSat ejection
+        SODS_ok       =  0xE8 ,  #ID for successful SODS reception
+        LO_ok         =  0xE9 ,  #ID for successful LO reception
+        SOE_ok        =  0xEA ,  #ID for successful SOE reception
     )
 
 
