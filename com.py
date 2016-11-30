@@ -81,10 +81,10 @@ class Mainboard():
         self.savedata = ''
 
     def PRS0_to_bar(self,x):
-        return x * 6.895 * 1.25/512
+        return round(x * 6.895 * 1.25/512, 3)
 
     def PRS1_to_bar(self,x):
-        return x * 17.237 * 1.25/256
+        return round(x * 17.237 * 1.25/256, 3)
 
     ### control functions following
     def write_command(self,command):
@@ -171,7 +171,7 @@ class Mainboard():
         if (stop != 2*chr(signal["STOP_byte"])):
             print "ERROR: Package number " + str(packagenumber) + " is broken!\n"
         
-        self.logfile.write(str(time.time()) + " " + package + "\n")
+        self.logfile.write(str(time.time()) + " " + str(package) + "\n")
         return package
         
 
