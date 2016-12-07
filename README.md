@@ -1,5 +1,5 @@
 # diane-mainboard-comm
-Software to monitor and control the status of the DIANE experiment.
+Software to monitor and control the status of the [DIANE](https://www.facebook.com/DIANE.Project/) experiment.
 
 ## Requirements
 - Python 2.7 with following packages: `serial, io, time, struct`
