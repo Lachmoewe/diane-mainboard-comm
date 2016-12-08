@@ -7,7 +7,7 @@ Software to monitor and control the status of the [DIANE](https://www.facebook.c
 - DIANE Mainboard
 
 ## Usage
-Connect your USB to RS232 adaptor to the DIANE Mainboard like this (sorry the image is so small, I couldnt find a way to display it any bigger):
+Connect your USB to RS232 adaptor to the DIANE Mainboard like this (sorry the image is so small, I couldnt find a way to display it any bigger): [Note that pin 1 of the Mainboard is its RxD! So connect the TxD of the serial converter to it.]
 
 ![COMM Port](https://raw.githubusercontent.com/Lachmoewe/diane-mainboard-comm/master/connector.jpg)
 
