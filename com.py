@@ -11,6 +11,7 @@ class Mainboard():
         START_byte    =  0xCC ,  #start byte for USART transmission
         STOP_byte     =  0x1F ,  #stop byte for USART transmission
 
+        RXSM_id       =  0x30 ,  #ID for RXSM signal reception answer
         PRS0_id       =  0x31 ,  #ID for data of PRS_sensor_0
         PRS1_id       =  0x32 ,  #ID for data of PRS_sensor_1
         TEMP_id       =  0x33 ,  #ID for data of TEMP_sensor
@@ -19,7 +20,11 @@ class Mainboard():
         ARM_id        =  0x36 ,  #ID for status of ARM_sensor
         RF_id         =  0x37 ,  #ID for status of RF-Board
         VLV_id        =  0x38 ,  #ID for status of Valve_0
-        RXSM_id       =  0x30 ,  #ID for RXSM signal reception answer
+        PRSS_id       =  0x39 ,  #ID for status of Pressure sampling
+        CAMS_id       =  0x3A ,  #ID for status of Cams (rec/pwr)
+        P5V_id        =  0x3B ,  #ID for status of CubeSat 5V
+        FWV_id        =  0x3C ,  #ID for Firmware Version
+
 
         GET_prs0      =  0x61 ,  #ID for request of single PRS0 value
         GET_prs1      =  0x62 ,  #ID for request of single PRS1 value
@@ -27,15 +32,9 @@ class Mainboard():
         GET_arm       =  0x66 ,  #ID for request of arm state
         OPN_vlv       =  0x67 ,  #ID for command to open Valve_0
         CLS_vlv       =  0x68 ,  #ID for command to close Valve_0
+        TON_p5v       =  0x6B ,  #ID for command to turn on 5V in CubeSat 
         REQ_pwr_dwn   =  0x6F ,  #ID for power down request
 
- #      CAM0_ok       =  0xA4 ,  #ID for cam0 status ok
- #      CAM1_ok       =  0xA5 ,  #ID for cam1 status ok
- #      ARM_ok        =  0xA6 ,  #ID for ARM sensor ok
- #      RF_ok         =  0xA7 ,  #ID for RF board ok
- #      VLV_opnd      =  0xA8 ,  #ID for Valve_0 opened
- #      VLV_clsd      =  0xA9 ,  #ID for Valve_0 closed
- #      ERR_stat      =  0xA0 ,  #ID for error status
 
         PRSS_strt     =  0xA1 ,  #ID for Pressure-Sampling started
         PRSS_stop     =  0xA2 ,  #ID for Pressure-Sampling stopped
@@ -53,6 +52,7 @@ class Mainboard():
         CAM_off       =  0xAF ,  #ID for Cams turned off
         ERR_stat      =  0xA0 ,  #ID for error status             
 
+        P5V_on        =  0xE0 ,  #ID for CubeSat 5V turned on
         ARM_success   =  0xE6 ,  #ID for successful CubeSat ejection
         SODS_ok       =  0xE8 ,  #ID for successful SODS reception
         LO_ok         =  0xE9 ,  #ID for successful LO reception
@@ -108,6 +108,9 @@ class Mainboard():
     
     def CLS_vlv(self):    
         self.write_command(signal["CLS_vlv"])
+
+    def TON_p5v(self):
+        self.write_command(signal["TON_p5v"])
     
     def REQ_pwr_dwn(self):
         self.write_command(signal["REQ_pwr_dwn"])
@@ -186,14 +189,17 @@ class App(threading.Thread):
         self.mb=mainboard
 
         self.status = collections.OrderedDict()
+        # Sensor data
         self.status["PRS0_id"] = None
         self.status["PRS1_id"] = None
         self.status["TEMP_id"] = None
-        self.status["CAM0_id"] = None
-        self.status["CAM1_id"] = None
-        self.status["ARM_id"]  = None
+
+        # Status messages
+        self.status["PRSS_id"] = None
+        self.status["CAMS_id"] = None
         self.status["RF_id"]   = None
         self.status["VLV_id"]  = None
+        self.status["ARM_id"]  = None
         self.status["RXSM_id"] = None
 
         self.start()
@@ -212,13 +218,14 @@ class App(threading.Thread):
         self.root.resizable(width=False,height=False)
 
         #control buttons for mainboard
-        self.GET_prs0_bttn = tk.Button(self.root, text="GET_prs0",command=self.mb.GET_prs0)
-        self.GET_prs1_bttn = tk.Button(self.root, text="GET_prs1",command=self.mb.GET_prs1)
-        self.GET_temp_bttn = tk.Button(self.root, text="GET_temp",command=self.mb.GET_temp)
-        self.GET_arm_bttn = tk.Button(self.root, text="GET_arm",command=self.mb.GET_arm)
-        self.OPN_vlv_bttn = tk.Button(self.root, text="OPN_vlv",command=self.mb.OPN_vlv)
-        self.CLS_vlv_bttn = tk.Button(self.root, text="CLS_vlv",command=self.mb.CLS_vlv)
-        self.REQ_pwr_dwn_bttn = tk.Button(self.root, fg="red", text="REQ_pwr_dwn",command=self.mb.REQ_pwr_dwn)
+        self.GET_prs0_bttn = tk.Button(self.root, text="Get low Pressure",command=self.mb.GET_prs0)
+        self.GET_prs1_bttn = tk.Button(self.root, text="Get high Pressure",command=self.mb.GET_prs1)
+        self.GET_temp_bttn = tk.Button(self.root, text="Get Temperature",command=self.mb.GET_temp)
+        self.GET_arm_bttn = tk.Button(self.root, text="Get Arm status",command=self.mb.GET_arm)
+        self.OPN_vlv_bttn = tk.Button(self.root, text="Open Valve",command=self.mb.OPN_vlv)
+        self.CLS_vlv_bttn = tk.Button(self.root, text="Close Valve",command=self.mb.CLS_vlv)
+        self.5v_on_bttn = tk.Button(self.root, fg="yellow", text="5V Cubesat ON",command=self.mb.REQ_pwr_dwn)
+        self.REQ_pwr_dwn_bttn = tk.Button(self.root, fg="red", text="!!POWER DOWN!!",command=self.mb.REQ_pwr_dwn)
         
         #text from mainboard
         message = ""
@@ -233,7 +240,8 @@ class App(threading.Thread):
         self.GET_arm_bttn.grid(row=0,column=1)
         self.OPN_vlv_bttn.grid(row=1,column=1)
         self.CLS_vlv_bttn.grid(row=2,column=1)
-        self.REQ_pwr_dwn_bttn.grid(columnspan=2,row=3)
+        self.5v_on_bttn.grid(row=3,column=0)
+        self.REQ_pwr_dwn_bttn.grid(row=3,column=1)
         self.package_label.grid(columnspan=3,row=4)
         
 
