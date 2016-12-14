@@ -224,7 +224,7 @@ class App(threading.Thread):
         self.GET_arm_bttn = tk.Button(self.root, text="Get Arm status",command=self.mb.GET_arm)
         self.OPN_vlv_bttn = tk.Button(self.root, text="Open Valve",command=self.mb.OPN_vlv)
         self.CLS_vlv_bttn = tk.Button(self.root, text="Close Valve",command=self.mb.CLS_vlv)
-        self.5v_on_bttn = tk.Button(self.root, fg="yellow", text="5V Cubesat ON",command=self.mb.REQ_pwr_dwn)
+        self.t5v_on_bttn = tk.Button(self.root, fg="yellow", text="5V Cubesat ON",command=self.mb.TON_p5v)
         self.REQ_pwr_dwn_bttn = tk.Button(self.root, fg="red", text="!!POWER DOWN!!",command=self.mb.REQ_pwr_dwn)
         
         #text from mainboard
@@ -240,7 +240,7 @@ class App(threading.Thread):
         self.GET_arm_bttn.grid(row=0,column=1)
         self.OPN_vlv_bttn.grid(row=1,column=1)
         self.CLS_vlv_bttn.grid(row=2,column=1)
-        self.5v_on_bttn.grid(row=3,column=0)
+        self.t5v_on_bttn.grid(row=3,column=0)
         self.REQ_pwr_dwn_bttn.grid(row=3,column=1)
         self.package_label.grid(columnspan=3,row=4)
         
