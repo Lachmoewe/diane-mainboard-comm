@@ -88,7 +88,7 @@ class Mainboard():
 
     ### control functions following
     def write_command(self,command):
-        w = chr(signal["START_byte"]) + chr(command) + chr(signal["START_byte"])
+        w = chr(signal["START_byte"]) + chr(command) + chr(signal["STOP_byte"])
         self.rs232.write(w)
     
     def GET_prs0(self):
@@ -218,10 +218,10 @@ class App(threading.Thread):
         self.root.resizable(width=False,height=False)
 
         #control buttons for mainboard
-        self.GET_prs0_bttn = tk.Button(self.root, text="Get low Pressure",command=self.mb.GET_prs0)
-        self.GET_prs1_bttn = tk.Button(self.root, text="Get high Pressure",command=self.mb.GET_prs1)
+        self.GET_prs0_bttn = tk.Button(self.root, text="Get Antenna Pressure",command=self.mb.GET_prs0)
+        self.GET_prs1_bttn = tk.Button(self.root, text="Get Tank Pressure",command=self.mb.GET_prs1)
         self.GET_temp_bttn = tk.Button(self.root, text="Get Temperature",command=self.mb.GET_temp)
-        self.GET_arm_bttn = tk.Button(self.root, text="Get Arm status",command=self.mb.GET_arm)
+        self.GET_arm_bttn = tk.Button(self.root, text="Get ARM Status",command=self.mb.GET_arm)
         self.OPN_vlv_bttn = tk.Button(self.root, text="Open Valve",command=self.mb.OPN_vlv)
         self.CLS_vlv_bttn = tk.Button(self.root, text="Close Valve",command=self.mb.CLS_vlv)
         self.t5v_on_bttn = tk.Button(self.root, fg="yellow", text="5V Cubesat ON",command=self.mb.TON_p5v)
